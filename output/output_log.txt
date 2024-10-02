@@ -1,0 +1,503 @@
+#################### First 5 rows of original data #######################
+   age           job  marital education_qual call_type  day  mon  dur  num_calls prev_outcome   y
+0   58    management  married       tertiary   unknown    5  may  261          1      unknown  no
+1   44    technician   single      secondary   unknown    5  may  151          1      unknown  no
+2   33  entrepreneur  married      secondary   unknown    5  may   76          1      unknown  no
+3   47   blue-collar  married        unknown   unknown    5  may   92          1      unknown  no
+4   33       unknown   single        unknown   unknown    5  may  198          1      unknown  no
+
+#################### Describe original data specifications ###############
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 45211 entries, 0 to 45210
+Data columns (total 11 columns):
+ #   Column          Non-Null Count  Dtype 
+---  ------          --------------  ----- 
+ 0   age             45211 non-null  int64 
+ 1   job             45211 non-null  object
+ 2   marital         45211 non-null  object
+ 3   education_qual  45211 non-null  object
+ 4   call_type       45211 non-null  object
+ 5   day             45211 non-null  int64 
+ 6   mon             45211 non-null  object
+ 7   dur             45211 non-null  int64 
+ 8   num_calls       45211 non-null  int64 
+ 9   prev_outcome    45211 non-null  object
+ 10  y               45211 non-null  object
+dtypes: int64(4), object(7)
+memory usage: 3.8+ MB
+
+                 age           day           dur     num_calls
+count   45211.000000  45211.000000  45211.000000  45211.000000
+mean       40.936210     15.806419    258.163080      2.763841
+std        10.618762      8.322476    257.527812      3.098021
+min        18.000000      1.000000      0.000000      1.000000
+25%        33.000000      8.000000    103.000000      1.000000
+50%        39.000000     16.000000    180.000000      2.000000
+75%        48.000000     21.000000    319.000000      3.000000
+max        95.000000     31.000000   4918.000000     63.000000
+median     39.000000     16.000000    180.000000      2.000000
+mode       32.000000     20.000000    124.000000      1.000000
+
+Modes of categorical variables are:
+           job  marital education_qual call_type  mon prev_outcome   y
+0  blue-collar  married      secondary  cellular  may      unknown  no
+
+job          
+blue-collar      9732
+management       9458
+technician       7597
+admin.           5171
+services         4154
+retired          2264
+self-employed    1579
+entrepreneur     1487
+unemployed       1303
+housemaid        1240
+student           938
+unknown           288
+Name: count, dtype: int64
+
+marital 
+married     27214
+single      12790
+divorced     5207
+Name: count, dtype: int64
+
+education_qual
+secondary         23202
+tertiary          13301
+primary            6851
+unknown            1857
+Name: count, dtype: int64
+
+call_type
+cellular     29285
+unknown      13020
+telephone     2906
+Name: count, dtype: int64
+
+mon
+may    13766
+jul     6895
+aug     6247
+jun     5341
+nov     3970
+apr     2932
+feb     2649
+jan     1403
+oct      738
+sep      579
+mar      477
+dec      214
+Name: count, dtype: int64
+
+prev_outcome
+unknown         36959
+failure          4901
+other            1840
+success          1511
+Name: count, dtype: int64
+
+y  
+no     39922
+yes     5289
+Name: count, dtype: int64
+##########################################################################
+
+##################### output/data_exploration_before_data_cleaning.png file saved ###################
+
+##################### output/input_description_before_data_cleaning.png file saved ###################
+
+#################### Data cleaning and dataset changes ###################
+Dataset has these missing values:
+age               0
+job               0
+marital           0
+education_qual    0
+call_type         0
+day               0
+mon               0
+dur               0
+num_calls         0
+prev_outcome      0
+y                 0
+dtype: int64
+
+Missing values are replaced by next valid value of that column using bfill method.
+
+Duplicate rows are:
+       age          job  marital education_qual call_type  day  mon  dur  num_calls prev_outcome   y
+6893    34     services  married      secondary   unknown   28  may  124          1      unknown  no
+8138    29       admin.   single      secondary   unknown    2  jun  121          4      unknown  no
+11630   39  blue-collar  married        primary   unknown   19  jun  112          4      unknown  no
+13400   36  blue-collar  married      secondary  cellular    9  jul  183          1      unknown  no
+19826   36   management  married       tertiary  cellular    8  aug   75          2      unknown  no
+19854   32   technician   single       tertiary  cellular    8  aug   31          2      unknown  no
+Duplicate rows count: 6
+After removing duplicate rows the dataset has 45205 rows.
+
+##################### input_outliers.png file saved ######################
+
+Outliers based on IQR method and skewness before handling them:
+
+Outliers of Column age count: 487  ---  skewness: 0.6846453089841554
+Outliers of Column day count: 0  ---  skewness: 0.09300853841061418
+Outliers of Column dur count: 3235  ---  skewness: 3.1441453453578547
+Outliers of Column num_calls count: 3064  ---  skewness: 4.898452689018327
+
+Outliers based on IQR method and skewness after handling them:
+
+Outliers of Column age count: 0  ---  skewness: 0.4353528088779051
+Outliers of Column day count: 0  ---  skewness: 0.09300853841061418
+Outliers of Column dur count: 0  ---  skewness: 1.1294656133921699
+Outliers of Column num_calls count: 0  ---  skewness: 1.3141750431998713
+
+Below columns need encoding:
+Values for job are ['admin.' 'blue-collar' 'entrepreneur' 'housemaid' 'management' 'retired'
+ 'self-employed' 'services' 'student' 'technician' 'unemployed' 'unknown']
+Values for marital are ['divorced' 'married' 'single']
+Values for education_qual are ['primary' 'secondary' 'tertiary' 'unknown']
+Values for call_type are ['cellular' 'telephone' 'unknown']
+Values for mon are ['apr' 'aug' 'dec' 'feb' 'jan' 'jul' 'jun' 'mar' 'may' 'nov' 'oct' 'sep']
+Values for prev_outcome are ['failure' 'other' 'success' 'unknown']
+Values for y are ['no' 'yes']
+
+#################### Describe cleaned (except scaling step) data specifications ###############
+<class 'pandas.core.frame.DataFrame'>
+Index: 45205 entries, 0 to 45210
+Data columns (total 11 columns):
+ #   Column          Non-Null Count  Dtype
+---  ------          --------------  -----
+ 0   age             45205 non-null  int64
+ 1   job             45205 non-null  int64
+ 2   marital         45205 non-null  int64
+ 3   education_qual  45205 non-null  int64
+ 4   call_type       45205 non-null  int64
+ 5   day             45205 non-null  int64
+ 6   mon             45205 non-null  int64
+ 7   dur             45205 non-null  int64
+ 8   num_calls       45205 non-null  int64
+ 9   prev_outcome    45205 non-null  int64
+ 10  y               45205 non-null  int64
+dtypes: int64(11)
+memory usage: 5.1 MB
+
+                 age           job       marital  education_qual     call_type          day           mon           dur     num_calls  prev_outcome             y
+count   45205.000000  45205.000000  45205.000000    45205.000000  45205.000000  45205.00000  45205.000000  45205.000000  45205.000000  45205.000000  45205.000000
+mean       40.454286      4.339852      1.167703        1.224820      0.640195     15.80688      5.523150    197.815065      2.053335      2.559916      0.117000
+std         9.963815      3.272637      0.608243        0.748005      0.897927      8.32234      3.006935    137.216384      1.301834      0.989112      0.321424
+min        18.000000      0.000000      0.000000        0.000000      0.000000      1.00000      0.000000      0.000000      1.000000      0.000000      0.000000
+25%        32.000000      1.000000      1.000000        1.000000      0.000000      8.00000      3.000000    103.000000      1.000000      3.000000      0.000000
+50%        39.000000      4.000000      1.000000        1.000000      0.000000     16.00000      6.000000    156.000000      2.000000      3.000000      0.000000
+75%        48.000000      7.000000      2.000000        2.000000      2.000000     21.00000      8.000000    265.000000      3.000000      3.000000      0.000000
+max        70.000000     11.000000      2.000000        3.000000      2.000000     31.00000     11.000000    643.000000      6.000000      3.000000      1.000000
+median     39.000000      4.000000      1.000000        1.000000      0.000000     16.00000      6.000000    156.000000      2.000000      3.000000      0.000000
+mode       32.000000      1.000000      1.000000        1.000000      0.000000     20.00000      8.000000    124.000000      1.000000      3.000000      0.000000
+
+Modes of categorical variables are:
+Empty DataFrame
+Columns: []
+Index: [0]
+##########################################################################
+
+correlations of features:
+                     age       job   marital  education_qual  call_type       day       mon       dur  num_calls  prev_outcome         y
+age             1.000000 -0.032499 -0.399883       -0.094783   0.037129 -0.006388 -0.042507 -0.034945   0.033439      0.020859 -0.023055
+job            -0.032499  1.000000  0.062042        0.166651  -0.082021  0.022802 -0.092848 -0.003807   0.008903      0.011023  0.040431
+marital        -0.399883  0.062042  1.000000        0.108558  -0.039221 -0.005183 -0.006955  0.016199  -0.025963     -0.016868  0.045603
+education_qual -0.094783  0.166651  0.108558        1.000000  -0.110841  0.022724 -0.057230 -0.001247  -0.010769     -0.019358  0.066241
+call_type       0.037129 -0.082021 -0.039221       -0.110841   1.000000 -0.027990  0.361111 -0.028934  -0.013068      0.272219 -0.148391
+day            -0.006388  0.022802 -0.005183        0.022724  -0.027990  1.000000 -0.006116 -0.045750   0.064215      0.083492 -0.028371
+mon            -0.042507 -0.092848 -0.006955       -0.057230   0.361111 -0.006116  1.000000  0.009550  -0.091659     -0.033020 -0.024490
+dur            -0.034945 -0.003807  0.016199       -0.001247  -0.028934 -0.045750  0.009550  1.000000  -0.042398     -0.014447  0.171948
+num_calls       0.033439  0.008903 -0.025963       -0.010769  -0.013068  0.064215 -0.091659 -0.042398   1.000000      0.060474 -0.051128
+prev_outcome    0.020859  0.011023 -0.016868       -0.019358   0.272219  0.083492 -0.033020 -0.014447   0.060474      1.000000 -0.077821
+y              -0.023055  0.040431  0.045603        0.066241  -0.148391 -0.028371 -0.024490  0.171948  -0.051128     -0.077821  1.000000
+##################### output/correlations.png file saved ###################
+
+##################### output/data_exploration_after_data_cleaning.png file saved ###################
+
+##################### output/input_description_after_data_cleaning.png file saved ###################
+
+
+After encoding and Scaling dataset is:
+            age       job  marital  education_qual  call_type       day       mon       dur  num_calls  prev_outcome  y
+0      0.769231  0.363636      0.5        0.666667        1.0  0.133333  0.727273  0.405910        0.0      1.000000  0
+1      0.500000  0.818182      1.0        0.333333        1.0  0.133333  0.727273  0.234837        0.0      1.000000  0
+2      0.288462  0.181818      0.5        0.333333        1.0  0.133333  0.727273  0.118196        0.0      1.000000  0
+3      0.557692  0.090909      0.5        1.000000        1.0  0.133333  0.727273  0.143079        0.0      1.000000  0
+4      0.288462  1.000000      1.0        1.000000        1.0  0.133333  0.727273  0.307932        0.0      1.000000  0
+...         ...       ...      ...             ...        ...       ...       ...       ...        ...           ... ..
+45206  0.634615  0.818182      0.5        0.666667        0.0  0.533333  0.818182  0.192846        0.4      1.000000  1
+45207  0.269231  0.454545      0.0        0.000000        0.0  0.533333  0.818182  0.709176        0.2      1.000000  1
+45208  0.269231  0.454545      0.5        0.333333        0.0  0.533333  0.818182  0.192846        0.8      0.666667  1
+45209  0.750000  0.090909      0.5        0.333333        0.5  0.533333  0.818182  0.790047        0.6      1.000000  0
+45210  0.365385  0.181818      0.5        0.333333        0.0  0.533333  0.818182  0.561431        0.2      0.333333  0
+
+[45205 rows x 11 columns]
+'No' Count: 39916 --- 'Yes' Count: 5289
+
+
+The proportion of 'yes' in the whole dataset: 0.11700033182170114
+The proportion of 'yes' in the y_train set: 0.11662684718166534
+The proportion of 'yes' in the y_test set: 0.11812068660414086
+#################### Modeling via decision tree ###################
+################ classification by decision tree #################
+
+################ Evaluating the decision tree model(Before Optimization) #################
+Confusion matrix:
+[[9233  734]
+ [ 704  631]]
+
+##################### output/decisiontree_model/before_optimization/confusion_matrix_Before Optimization.png file saved ###################
+
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.93      0.93      0.93      9967
+           1       0.46      0.47      0.47      1335
+
+    accuracy                           0.87     11302
+   macro avg       0.70      0.70      0.70     11302
+weighted avg       0.87      0.87      0.87     11302
+
+Importance of features:
+                feature_importances
+marital                    0.025313
+call_type                  0.029126
+education_qual             0.038499
+num_calls                  0.054499
+job                        0.073199
+prev_outcome               0.088440
+mon                        0.124910
+age                        0.145250
+day                        0.146569
+dur                        0.274194
+##################### output/decisiontree_model/before_optimization/feature_importances_Before Optimization.png file saved ###################
+
+Classes are: [0 1]
+############ Hyperparameter tuning to optimized model parameters ############
+
+Best Parameters: {'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 1, 'min_samples_split': 3, 'random_state': 1}
+Best Score: 0.8942570665302453
+################ classification by decision tree #################
+
+################ Evaluating the decision tree model(After Optimization) #################
+Confusion matrix:
+[[9601  366]
+ [ 898  437]]
+
+##################### output/decisiontree_model/after_optimization/confusion_matrix_After Optimization.png file saved ###################
+
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.91      0.96      0.94      9967
+           1       0.54      0.33      0.41      1335
+
+    accuracy                           0.89     11302
+   macro avg       0.73      0.65      0.67     11302
+weighted avg       0.87      0.89      0.88     11302
+
+Importance of features:
+                feature_importances
+marital                    0.010908
+num_calls                  0.018762
+education_qual             0.031819
+day                        0.033429
+job                        0.036555
+prev_outcome               0.067944
+call_type                  0.084957
+mon                        0.087012
+age                        0.094901
+dur                        0.533714
+##################### output/decisiontree_model/after_optimization/feature_importances_After Optimization.png file saved ###################
+
+Classes are: [0 1]
+#################### Modeling via random forest ###################
+################ classification by random forest #################
+
+################ Evaluating the random forest model(Before Optimization) #################
+Confusion matrix:
+[[9651  316]
+ [ 812  523]]
+
+##################### output/randomforest_model/before_optimization/confusion_matrix_Before Optimization.png file saved ###################
+
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.92      0.97      0.94      9967
+           1       0.62      0.39      0.48      1335
+
+    accuracy                           0.90     11302
+   macro avg       0.77      0.68      0.71     11302
+weighted avg       0.89      0.90      0.89     11302
+
+Importance of features:
+                feature_importances
+marital                    0.029316
+call_type                  0.029769
+education_qual             0.036777
+num_calls                  0.052963
+job                        0.073445
+prev_outcome               0.076940
+mon                        0.119417
+day                        0.144127
+age                        0.152470
+dur                        0.284775
+##################### output/randomforest_model/before_optimization/feature_importances_Before Optimization.png file saved ###################
+
+Classes are: [0 1]
+############ Hyperparameter tuning to optimized model parameters ############
+
+Best Parameters: {'max_depth': None, 'max_features': 'sqrt', 'min_samples_leaf': 2, 'min_samples_split': 2, 'random_state': None}
+Best Score: 0.9008641010214642
+################ classification by random forest #################
+
+################ Evaluating the random forest model(After Optimization) #################
+Confusion matrix:
+[[9656  311]
+ [ 826  509]]
+
+##################### output/randomforest_model/after_optimization/confusion_matrix_After Optimization.png file saved ###################
+
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.92      0.97      0.94      9967
+           1       0.62      0.38      0.47      1335
+
+    accuracy                           0.90     11302
+   macro avg       0.77      0.68      0.71     11302
+weighted avg       0.89      0.90      0.89     11302
+
+Importance of features:
+                feature_importances
+marital                    0.024937
+education_qual             0.031137
+call_type                  0.032609
+num_calls                  0.043384
+job                        0.061687
+prev_outcome               0.095686
+mon                        0.126765
+day                        0.130518
+age                        0.135720
+dur                        0.317556
+##################### output/randomforest_model/after_optimization/feature_importances_After Optimization.png file saved ###################
+
+Classes are: [0 1]
+#################### Modeling via logistic regression ###################
+################ classification by logistic regression #################
+
+################ Evaluating the logistic regression model(Before Optimization) #################
+Confusion matrix:
+[[9965    2]
+ [1330    5]]
+
+##################### output/logisticregression_model/before_optimization/confusion_matrix_Before Optimization.png file saved ###################
+
+Coefficient of features:
+                Coefficient
+call_type         -1.268205
+num_calls         -0.559318
+day               -0.256647
+prev_outcome      -0.220941
+age                0.100085
+mon                0.208713
+job                0.296815
+marital            0.341934
+education_qual     0.584791
+dur                2.131655
+##################### output/logisticregression_model/before_optimization/Coefficient_Before Optimization.png file saved ###################
+
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.88      1.00      0.94      9967
+           1       0.71      0.00      0.01      1335
+
+    accuracy                           0.88     11302
+   macro avg       0.80      0.50      0.47     11302
+weighted avg       0.86      0.88      0.83     11302
+
+############ Hyperparameter tuning to optimized model parameters ############
+
+Best Parameters: {'C': 1, 'max_iter': 100, 'penalty': 'l2', 'random_state': 0, 'solver': 'liblinear'}
+Best Score: 0.8834616547450167
+################ classification by logistic regression #################
+
+################ Evaluating the logistic regression model(After Optimization) #################
+Confusion matrix:
+[[9965    2]
+ [1329    6]]
+
+##################### output/logisticregression_model/after_optimization/confusion_matrix_After Optimization.png file saved ###################
+
+Coefficient of features:
+                Coefficient
+call_type         -1.263528
+num_calls         -0.568803
+day               -0.257131
+prev_outcome      -0.228491
+age                0.087071
+mon                0.197139
+job                0.295275
+marital            0.333180
+education_qual     0.575133
+dur                2.127404
+##################### output/logisticregression_model/after_optimization/Coefficient_After Optimization.png file saved ###################
+
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.88      1.00      0.94      9967
+           1       0.75      0.00      0.01      1335
+
+    accuracy                           0.88     11302
+   macro avg       0.82      0.50      0.47     11302
+weighted avg       0.87      0.88      0.83     11302
+
+#################### Modeling via k-nearest neighbour ###################
+################ classification by k-nearest neighbour #################
+
+################ Evaluating the knn model(Before Optimization) #################
+Confusion matrix:
+[[9789  178]
+ [1114  221]]
+
+##################### output/knn_model/before_optimization/confusion_matrix_Before Optimization.png file saved ###################
+
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.90      0.98      0.94      9967
+           1       0.55      0.17      0.25      1335
+
+    accuracy                           0.89     11302
+   macro avg       0.73      0.57      0.60     11302
+weighted avg       0.86      0.89      0.86     11302
+
+############ Hyperparameter tuning to optimized model parameters ############
+
+Best Parameters: {'metric': 'manhattan', 'n_neighbors': 11, 'weights': 'uniform'}
+Best Score: 0.8902161644609115
+################ classification by k-nearest neighbour #################
+
+################ Evaluating the knn model(After Optimization) #################
+Confusion matrix:
+[[9894   73]
+ [1196  139]]
+
+##################### output/knn_model/after_optimization/confusion_matrix_After Optimization.png file saved ###################
+
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.89      0.99      0.94      9967
+           1       0.66      0.10      0.18      1335
+
+    accuracy                           0.89     11302
+   macro avg       0.77      0.55      0.56     11302
+weighted avg       0.86      0.89      0.85     11302
+
